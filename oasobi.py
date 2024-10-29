@@ -3,7 +3,7 @@ import socket
 yes_list = ["y","yes","Yes","Y"]
 no_list = ["n","no","No","N"]
 name = "unknown"
-
+self_introduction = "unknown"
 class operate_server:
     send_port_num = int
     #port_creat()のportnumberを使ってサーバー設立
@@ -23,14 +23,18 @@ def start():
 def previw():
     num = int(input("\n\nHello!\n1:view\n2:open_port_change\n3:send_message\n4:exit\n\n"))
 
-    if num == 1:#port_view
+    if num == 1:#profile
         global name
-        name_y_or_n = input("あなたは" + name + "です。\n名前を変更しますか？[Y/N]")
-        if name_y_or_n in yes_list:
+        global self_introduction
+        profile = input("あなたのプロフィール" + name + self_introduction "\n何を変更しますか？1:名前\n2:プロフィール\n3:exit")
+        if profile == "1":
             new_name = input("名前を設定してください:")
             name = new_name
 
-        elif name_y_or_n in no_list:
+        elif profile == "2":
+            new_self = input("プロフィールを入力してください")
+            self_introduction = new_self
+        else:
             print("OK,Goodbye!")
     elif num == 2:#send_port_setting
         send_port_input = int(input("送信先のportを入力してください"))
