@@ -2,8 +2,12 @@ import socket
 
 yes_list = ["y","yes","Yes","Y"]
 no_list = ["n","no","No","N"]
-name = "unknown"
-self_introduction = "unknown"
+my_port = int
+send_port = int
+name = "hoge"
+self_introduction = "profile"
+end = False
+
 class operate_server:
     send_port_num = int
     #port_creat()のportnumberを使ってサーバー設立
@@ -14,33 +18,42 @@ class operate_server:
         server_socket.listen(5)
 
     def send_port_setting(send_port_setting):
-        send_port_setting = send_port_setting
+        global send_port
+        send_port = send_port_setting
 
 def start():
-    port_num = int(input("port番号を入力してください"))
-    operate_server.port_connect(port_num)
+    global my_port
+    global send_port
+    my_port = int(input("port番号を入力してください"))
+    operate_server.port_connect(my_port)
+    send_port = int(input("送信先のport番号を入力してください"))
 
-def previw():
-    num = int(input("\n\nHello!\n1:view\n2:open_port_change\n3:send_message\n4:exit\n\n"))
+#常に稼働するHome画面
+def Home():
+    num = input("\n\nHello!\n1:profile\n2:send_port_change\n3:send_message\n4:exit\n\n")
 
-    if num == 1:#profile
+    if num == "1":#profile
         global name
         global self_introduction
-        profile = input("あなたのプロフィール" + name + self_introduction "\n何を変更しますか？1:名前\n2:プロフィール\n3:exit")
+        global my_port
+        profile = input("あなたのプロフィール\n\nあなたのport:" + str(my_port) +"\n名前:" + name + "\n自己紹介:" + self_introduction + "\n何を変更しますか？\n1:名前\n2:プロフィール\n3:exit\n\n")
         if profile == "1":
             new_name = input("名前を設定してください:")
             name = new_name
 
         elif profile == "2":
-            new_self = input("プロフィールを入力してください")
+            new_self = input("プロフィールを入力してください:")
             self_introduction = new_self
-        else:
-            print("OK,Goodbye!")
-    elif num == 2:#send_port_setting
+    elif num == "2":#send_port_setting
         send_port_input = int(input("送信先のportを入力してください"))
         operate_server.send_port_setting(send_port_input)
     #elif num == 5:
+    else:
+        global end
+        end = True
+        print("OK,Goodbye!")
 
-while True:
-    previw()
+start()
+while end == False:
+    Home()
     
