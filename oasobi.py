@@ -2,6 +2,7 @@ import socket
 
 yes_list = ["y","yes","Yes","Y"]
 no_list = ["n","no","No","N"]
+message_stack_list = []
 my_port = int
 send_port = int
 name = "hoge"
@@ -47,6 +48,16 @@ def Home():
     elif num == "2":#send_port_setting
         send_port_input = int(input("送信先のportを入力してください"))
         operate_server.send_port_setting(send_port_input)
+    elif num == "3":
+        global message_stack_list
+        while True:
+            send_message = input("\n\nmessage:")#message:の前に、履歴も表示
+            if send_message == "/exit":
+                break
+            else:
+                message_stack_list.append(send_message)
+                message_stack_str = '\n'.join(message_stack_list)
+                print(message_stack_str)
     #elif num == 5:
     else:
         global end
