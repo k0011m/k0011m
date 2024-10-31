@@ -5,7 +5,7 @@ no_list = ["n","no","No","N"]
 message_stack_list = []
 message_stack_str = ''
 my_port = int
-send_port = int()
+send_port = None
 name = "hoge"
 self_introduction = "profile"
 end = False
@@ -16,12 +16,15 @@ class operate_server:
     def port_connect(port):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_socket.bind(("", port))
+        server_socket.bind(("127.0.0.1", port))
         server_socket.listen(5)
-
+    #send_portを変える関数
     def send_port_setting(send_port_setting):
         global send_port
         send_port = send_port_setting
+
+    def send_message():
+        conn, addr = server_socket.accept()
 
 def start():
     global my_port
@@ -32,7 +35,7 @@ def start():
 
 #常に稼働するHome画面
 def Home():
-    num = input("\n\nHello!\n1:profile\n2:send_port_change\n3:send_message\n4:exit\n\n")
+    num = input("\n\nHello!\n1:profile\n2:setting_send_port\n3:send_message\n4:exit\n\n")
 
     if num == "1":#profile
         global name
@@ -58,9 +61,10 @@ def Home():
         #global send_port
         while True:
             if send_port == None:
-                print("Setting send_port!")
-                continue
-            #else:
+                input("Setting send_port!")
+                break
+            else:
+                print("接続完了")
                 
             #portに接続する
             global message_stack_list
@@ -83,4 +87,4 @@ def Home():
 start()
 while end == False:
     Home()
-    
+   
