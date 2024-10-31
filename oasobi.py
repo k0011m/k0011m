@@ -3,8 +3,9 @@ import socket
 yes_list = ["y","yes","Yes","Y"]
 no_list = ["n","no","No","N"]
 message_stack_list = []
+message_stack_str = ''
 my_port = int
-send_port = int
+send_port = int()
 name = "hoge"
 self_introduction = "profile"
 end = False
@@ -27,7 +28,7 @@ def start():
     global send_port
     my_port = int(input("port番号を入力してください"))
     operate_server.port_connect(my_port)
-    send_port = int(input("送信先のport番号を入力してください"))
+#    send_port = int(input("送信先のport番号を入力してください"))
 
 #常に稼働するHome画面
 def Home():
@@ -45,19 +46,34 @@ def Home():
         elif profile == "2":
             new_self = input("プロフィールを入力してください:")
             self_introduction = new_self
+
     elif num == "2":#send_port_setting
+        global send_port
         send_port_input = int(input("送信先のportを入力してください"))
-        operate_server.send_port_setting(send_port_input)
+        send_port = send_port_input
+        operate_server.send_port_setting(send_port)
+    
+    #messageを送る
     elif num == "3":
-        global message_stack_list
+        #global send_port
         while True:
-            send_message = input("\n\nmessage:")#message:の前に、履歴も表示
-            if send_message == "/exit":
-                break
-            else:
-                message_stack_list.append(send_message)
-                message_stack_str = '\n'.join(message_stack_list)
-                print(message_stack_str)
+            if send_port == None:
+                print("Setting send_port!")
+                continue
+            #else:
+                
+            #portに接続する
+            global message_stack_list
+            global message_stack_str
+            print(message_stack_str)
+            while True:
+                send_message = input("\n\nmessage:")
+                if send_message == "/exit":
+                    break
+                else:
+                    message_stack_list.append(send_message)
+                    message_stack_str = '\n'.join(message_stack_list)#履歴を表示
+                    print(message_stack_str)
     #elif num == 5:
     else:
         global end
