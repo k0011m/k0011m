@@ -39,7 +39,8 @@ def start():
 
 #常に稼働するHome画面
 def Home():
-    num = input("\n\nHello!\n1:profile\n2:setting_send_port\n3:send_message\n4:exit\n\n")
+    num = input("\n\nHello!\n1:profile\n2:setting_send_port\n3:send_message\n4:add_friend\n5:exit\n\n")
+    global name
 
     if num == "1":#profile
         global name
@@ -71,16 +72,18 @@ def Home():
                 print("接続完了")
                 
             #portに接続する
-            operate_server.send_message()
+            #operate_server.send_message()
 
             global message_stack_list
             global message_stack_str
+
             print(message_stack_str)
             while True:
                 send_message = input("\n\nmessage:")
                 if send_message == "/exit":
                     break
                 else:
+                    send_message = name + ":" + send_message
                     message_stack_list.append(send_message)
                     message_stack_str = '\n'.join(message_stack_list)#履歴を表示
                     print(message_stack_str)
@@ -93,4 +96,4 @@ def Home():
 
 start()
 while end == False:
-    Home()
+    Home() 
