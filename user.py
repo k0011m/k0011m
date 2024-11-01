@@ -1,4 +1,7 @@
 import socket
+import sys
+import threading
+import time
 
 yes_list = ["y","yes","Yes","Y"]
 no_list = ["n","no","No","N"]
@@ -26,9 +29,19 @@ class operate_server:
         global send_port
         send_port = send_port_setting
 
-    def send_message():
-        global server_socket
-        conn, addr = server_socket.accept()
+    def send_message(message):
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect(("127.0.0.1", send_port))
+        client_socket.send(message.encode('utf-8'))
+        client_socket.close()
+
+    def receive_message(self):
+        while self.running
+        client_socket, address = self.server_socket.accept()
+        message = client_socket.recv(1024).decode('utf-8')
+        print(f"\n受信メッセージ from {address[1]}: {message}")
+        client_socket.close()
+        
 
 def start():
     global my_port
@@ -86,6 +99,7 @@ def Home():
                     send_message = name + ":" + send_message
                     message_stack_list.append(send_message)
                     message_stack_str = '\n'.join(message_stack_list)#履歴を表示
+                    operate_server.send_message(message_stack_str)
                     print(message_stack_str)
             break
     #elif num == 5:
