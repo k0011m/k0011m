@@ -2,8 +2,9 @@ import socket
 
 yes_list = ["y","yes","Yes","Y"]
 no_list = ["n","no","No","N"]
-message_stack_list = []
+message_stack_list = ['\n\n\n\n\n\n\n\n']
 message_stack_str = ''
+server_socket = None
 my_port = int
 send_port = None
 name = "hoge"
@@ -12,8 +13,10 @@ end = False
 
 class operate_server:
     send_port_num = int
+    global server_socket
     #port_creat()のportnumberを使ってサーバー設立
     def port_connect(port):
+        global server_socket
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         server_socket.bind(("127.0.0.1", port))
@@ -24,6 +27,7 @@ class operate_server:
         send_port = send_port_setting
 
     def send_message():
+        global server_socket
         conn, addr = server_socket.accept()
 
 def start():
@@ -67,6 +71,8 @@ def Home():
                 print("接続完了")
                 
             #portに接続する
+            operate_server.send_message()
+
             global message_stack_list
             global message_stack_str
             print(message_stack_str)
@@ -78,6 +84,7 @@ def Home():
                     message_stack_list.append(send_message)
                     message_stack_str = '\n'.join(message_stack_list)#履歴を表示
                     print(message_stack_str)
+            break
     #elif num == 5:
     else:
         global end
@@ -87,4 +94,3 @@ def Home():
 start()
 while end == False:
     Home()
-   
