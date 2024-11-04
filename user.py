@@ -13,6 +13,8 @@ send_port = None
 name = "hoge"
 self_introduction = "profile"
 end = False
+friend_list = []
+friend_list_str = ''
 
 class operate_server:
     send_port_num = int
@@ -36,7 +38,7 @@ class operate_server:
         client_socket.close()
 
     def receive_message(self):
-        while self.running
+        #while self.running
         client_socket, address = self.server_socket.accept()
         message = client_socket.recv(1024).decode('utf-8')
         print(f"\n受信メッセージ from {address[1]}: {message}")
@@ -76,6 +78,14 @@ def Home():
     
     #messageを送る
     elif num == "3":
+        global friend_list
+        global friend_list_str
+        while True:
+            friend_choice = input(friend_list_str + "\n\n/add_friend")
+            if friend_choice == "/add_friend":
+                break
+            elif friend_choice :
+                send_friend = friend_choice
         #global send_port
         while True:
             if send_port == None:
