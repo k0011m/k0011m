@@ -31,9 +31,9 @@ class operate_server:
         global send_port
         send_port = send_port_setting
 
-    def send_message(message):
+    def send_message(message, send_message_port):
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect(("127.0.0.1", send_port))
+        client_socket.connect(("127.0.0.1", int(send_message_port)))
         client_socket.send(message.encode('utf-8'))
         client_socket.close()
 
@@ -81,17 +81,24 @@ def Home():
         global friend_list
         global friend_list_str
         while True:
-            friend_choice = input(friend_list_str + "\n\n/add_friend")
-            if friend_choice == "/add_friend":
+            friend_choice = input(friend_list_str + "\n\n+add_friend[/add]\n\n")
+            if friend_choice == "/add":
+                add_friend_port = input("フレンドのポートを入力してください:")
+                print("フレンドを追加しました！")
+                friend_list.append(add_friend_port)
+                friend_list_str = '\n'.join(friend_list)
+                continue
+            elif friend_choice in friend_list:
+                send_port = friend_choice
                 break
-            elif friend_choice :
-                send_friend = friend_choice
+            break
         #global send_port
         while True:
             if send_port == None:
                 input("Setting send_port!")
                 break
             else:
+                operate_server.send_port_setting(send_port)
                 print("接続完了")
                 
             #portに接続する
@@ -109,7 +116,7 @@ def Home():
                     send_message = name + ":" + send_message
                     message_stack_list.append(send_message)
                     message_stack_str = '\n'.join(message_stack_list)#履歴を表示
-                    operate_server.send_message(message_stack_str)
+                    operate_server.send_message(message_stack_str, send_port)
                     print(message_stack_str)
             break
     #elif num == 5:
