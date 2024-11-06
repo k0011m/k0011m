@@ -15,6 +15,8 @@ self_introduction = "profile"
 end = False
 friend_list = []
 friend_list_str = ''
+friend_list_path = "C:\Users\C22155\Documents\\friend.txt"
+friend_list_kali = open(friend_list_path)
 
 class operate_server:
     send_port_num = int
@@ -24,7 +26,7 @@ class operate_server:
         global server_socket
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_socket.bind(("127.0.0.1", port))
+        server_socket.bind((socket.gethostname(), int(port)))
         server_socket.listen(5)
     #send_portを変える関数
     def send_port_setting(send_port_setting):
@@ -33,16 +35,21 @@ class operate_server:
 
     def send_message(message, send_message_port):
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect(("127.0.0.1", int(send_message_port)))
+        client_socket.connect((socket.gethostname(), int(send_message_port)))
         client_socket.send(message.encode('utf-8'))
         client_socket.close()
 
     def receive_message(self):
         #while self.running
-        client_socket, address = self.server_socket.accept()
-        message = client_socket.recv(1024).decode('utf-8')
-        print(f"\n受信メッセージ from {address[1]}: {message}")
-        client_socket.close()
+        global send_port
+        if send_port == None:
+            return
+        else:
+            self = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.connect((send_port))
+            message = self.recv(1024).decode('utf-8')
+            print(f"\n受信メッセージ from {send_port[1]}: {message}")
+
         
 
 def start():
@@ -54,7 +61,11 @@ def start():
 
 #常に稼働するHome画面
 def Home():
-    num = input("\n\nHello!\n1:profile\n2:setting_send_port\n3:send_message\n4:add_friend\n5:exit\n\n")
+    global my_port
+    global send_port
+    global server_socket
+    operate_server.receive_message(server_socket)
+    num = input("\nHello!\n1:profile\n2:setting_send_port\n3:send_message\n4:add_friend\n5:exit\n\n")
     global name
 
     if num == "1":#profile
@@ -71,10 +82,10 @@ def Home():
             self_introduction = new_self
 
     elif num == "2":#send_port_setting
-        global send_port
-        send_port_input = int(input("送信先のportを入力してください"))
-        send_port = send_port_input
-        operate_server.send_port_setting(send_port)
+        global friend_list_kali
+        print(friend_list_kali)
+        aaa = input("aaa")
+        friend_list_kali.write(aaa)
     
     #messageを送る
     elif num == "3":
@@ -127,4 +138,4 @@ def Home():
 
 start()
 while end == False:
-    Home() 
+    Home()
