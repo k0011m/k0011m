@@ -13,10 +13,9 @@ send_port = None
 name = "hoge"
 self_introduction = "profile"
 end = False
-friend_list = []
 friend_list_str = ''
-friend_list_path = "C:\Users\C22155\Documents\\friend.txt"
-friend_list_kali = open(friend_list_path)
+friend_list_path = "friend.txt"
+friend_list = open(friend_list_path, 'r')
 
 class operate_server:
     send_port_num = int
@@ -82,22 +81,22 @@ def Home():
             self_introduction = new_self
 
     elif num == "2":#send_port_setting
-        global friend_list_kali
-        print(friend_list_kali)
-        aaa = input("aaa")
-        friend_list_kali.write(aaa)
+        print()
     
     #messageを送る
     elif num == "3":
         global friend_list
         global friend_list_str
+        global friend_list_path
         while True:
-            friend_choice = input(friend_list_str + "\n\n+add_friend[/add]\n\n")
+            friend_list_open = open(friend_list_path, 'a', encoding='UTF-8')
+            friend_list_data_str = str(friend_list_open.read)
+            friend_choice = input(str(friend_list_data_str) + "\n\n+add_friend[/add]\n\n")
             if friend_choice == "/add":
                 add_friend_port = input("フレンドのポートを入力してください:")
                 print("フレンドを追加しました！")
-                friend_list.append(add_friend_port)
-                friend_list_str = '\n'.join(friend_list)
+                friend_list_data = open(friend_list_path, 'a', encoding='UTF-8')
+                friend_list_data.write('\n' + add_friend_port)
                 continue
             elif friend_choice in friend_list:
                 send_port = friend_choice
