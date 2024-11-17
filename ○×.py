@@ -12,6 +12,7 @@ batu_skin = pygame.image.load("ゲーム\\batu.png")
 local_skin = pygame.image.load("ゲーム\local.png")
 cp_skin = pygame.image.load("ゲーム\cp.png")
 retry_skin = pygame.image.load("ゲーム\\retry.png")
+space_skin = pygame.image.load("ゲーム\space.png")
 
 #リサイズ
 long_size = (300, 141)
@@ -22,6 +23,7 @@ retry_skin = pygame.transform.scale(retry_skin, (long_size))
 short_size = (100, 100)
 maru_skin = pygame.transform.scale(maru_skin, (short_size))
 batu_skin = pygame.transform.scale(batu_skin, (short_size))
+space_skin = pygame.transform.scale(space_skin, (short_size))
 
 marubatu_list = []
 num = 0
@@ -30,6 +32,10 @@ num = 0
 #○×のリスト
 def marubatu_list_check(attack_marubatu):
     global marubatu_list
+    global num
+    if num > 6:
+        game_pos(2, marubatu_list[0])
+        del marubatu_list[0]
     if attack_marubatu in marubatu_list:
         return 0
     else:
@@ -103,12 +109,15 @@ def game_pos(maru_batu, pos):
     global display
     global maru_skin
     global batu_skin
+    global space_skin
     maru_batu = int(maru_batu)
     pos = int(pos)
     if maru_batu == 1:
         attack_mode = maru_skin
     if maru_batu == 0:
         attack_mode = batu_skin
+    if maru_batu == 2:
+        attack_mode = space_skin
     #座標を決定
     if pos == 11:
         display.blit(attack_mode, (25, 25))
@@ -156,7 +165,7 @@ def local():
     global num
     display.fill((255,255,255))
     pygame.display.update()
-    while num < 10:
+    while True:
         print(num)
         num = num + 1
         game_click_pos(num)
